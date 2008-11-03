@@ -1,0 +1,35 @@
+---
+name: App-CPAN-Mini-Visit
+version: v0.1.0
+author:
+  - 'David Golden <dagolden@cpan.org>'
+abstract: Add abstract here
+license: apache
+resources:
+  license: http://apache.org/licenses/LICENSE-2.0
+configure_requires:
+  version: 0.74
+requires:
+  CPAN::Mini: 0.569
+  Exception::Class::TryCatch: 1.12
+  File::Basename: 0
+  Getopt::Lucid: 0.16
+  Path::Class: 0.16
+  Pod::Usage: 1.35
+  perl: 5.01
+  version: 0.74
+build_requires:
+  Test::More: 0.62
+provides:
+  App::CPAN::Mini::Visit:
+    file: lib/App/CPAN/Mini/Visit.pm
+    version: v0.1.0
+generated_by: Module::Build version 0.3
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
+no_index:
+  directory:
+    - examples
+    - inc
+    - t

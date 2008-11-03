@@ -17,11 +17,21 @@ my $build = $class->new(
     license => 'apache',
     create_readme => 1,
     create_makefile_pl  => 'traditional',
+    configure_requires => {
+      'version' => 0.74, 
+    },
     requires => {
-        'perl' => '5.006',
+      'perl' => 5.010,
+      'CPAN::Mini' => 0.569,
+      'Exception::Class::TryCatch' => 1.12,
+      'File::Basename' => 0,
+      'Getopt::Lucid' => 0.16,
+      'Path::Class' => 0.16,
+      'Pod::Usage' => 1.35, 
+      'version' => 0.74, 
     },
     build_requires => {
-        'Test::More' => 0.47,
+      'Test::More' => 0.62, 
     },
     meta_add            => { 
         no_index => { 

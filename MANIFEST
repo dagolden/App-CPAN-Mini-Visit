@@ -17,3 +17,6 @@ xt/critic.t
 xt/perlcriticrc
 xt/spelling.t
 xt/stopwords.txt
+lib/App/CPAN/Mini/Visit.pod
+Makefile.PL
+META.yml

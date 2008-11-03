@@ -5,12 +5,58 @@
 # copy of the License from http://www.apache.org/licenses/LICENSE-2.0
 
 package App::CPAN::Mini::Visit;
-use 5.006;
+use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
-$VERSION = eval $VERSION; ## no critic
+use version; our $VERSION = qv("v0.1.0");
+
+use CPAN::Mini ();
+use Exception::Class::TryCatch qw/ try catch /;
+use File::Basename qw/ basename /;
+use Getopt::Lucid qw/ :all /;
+use Path::Class ();
+use Pod::Usage qw/ pod2usage /;
+
+my @option_spec = (
+  Switch("help|h"),
+  Switch("version|V"),
+  Param("minicpan|m"),
+  Param("command|c"),
+);
+
+sub run {
+  
+  # get command line options
+  my $opt = try eval { Getopt::Lucid->getopt( \@option_spec ) };
+  for ( catch ) {
+    when ( $_->isa('Getopt::Lucid::Exception::ARGV') ) {
+      say;
+      # usage stuff
+      exit 1;
+    }
+    default { die $_ }
+  }
+
+  # handle "help" and "version" options
+  pod2usage(1) if $opt->get_help;
+  say basename($0) . ": $VERSION" and exit(1) if $opt->get_version;
+
+  # locate minicpan directory
+  if ( ! $opt->get_minicpan ) {
+    my $config = try eval { CPAN::Mini->read_config };
+    if ( ! catch && $config->{local} ) {
+      $opt->merge_defaults( minicpan => $config->{local} );
+    }
+  }
+
+  # confirm minicpan directory looks like minicpan
+  # e.g. check for $dir/authors/id directory
+
+  # find all distribution tarballs in authors/id/...
+
+  # iterate over each distribution
+}
 
 1;
 

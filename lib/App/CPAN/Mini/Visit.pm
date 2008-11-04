@@ -11,6 +11,7 @@ use warnings;
 
 use version; our $VERSION = qv("v0.1.0");
 
+use File::HomeDir; #XXX hack because CPAN::Mini doesn't
 use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;
@@ -26,36 +27,77 @@ my @option_spec = (
 );
 
 sub run {
-  
+  my ($self, @args) = @_;
+
   # get command line options
-  my $opt = try eval { Getopt::Lucid->getopt( \@option_spec ) };
+  my $opt = try eval { Getopt::Lucid->getopt( \@option_spec, \@args ) };
   for ( catch ) {
     when ( $_->isa('Getopt::Lucid::Exception::ARGV') ) {
       say;
       # usage stuff
-      exit 1;
+      return 1;
     }
     default { die $_ }
   }
 
   # handle "help" and "version" options
-  pod2usage(1) if $opt->get_help;
-  say basename($0) . ": $VERSION" and exit(1) if $opt->get_version;
+  return _exit_usage() if $opt->get_help;
+  return _exit_version() if $opt->get_version;
 
   # locate minicpan directory
   if ( ! $opt->get_minicpan ) {
-    my $config = try eval { CPAN::Mini->read_config };
-    if ( ! catch && $config->{local} ) {
-      $opt->merge_defaults( minicpan => $config->{local} );
+    my %config = CPAN::Mini->read_config;
+    if ( $config{local} ) {
+      $opt->merge_defaults( {minicpan => $config{local}} );
     }
   }
 
-  # confirm minicpan directory looks like minicpan
+  # confirm minicpan directory that looks like minicpan
+  return _exit_no_minicpan() if ! $opt->get_minicpan;
+  return _exit_bad_minicpan($opt->get_minicpan) if ! -d $opt->get_minicpan;
+
   # e.g. check for $dir/authors/id directory
 
   # find all distribution tarballs in authors/id/...
 
   # iterate over each distribution
+}
+
+sub _exit_no_minicpan {
+  say STDERR << "END_NO_MINICPAN";
+No minicpan configured.
+END_NO_MINICPAN
+  return 1;
+}
+
+sub _exit_bad_minicpan {
+  my ($dir) = @_;
+  die "requires directory argument" unless defined $dir;
+  say STDERR << "END_BAD_MINICPAN";
+Directory '$dir' does not appear to be a CPAN repository.
+END_BAD_MINICPAN
+  return 1;
+}
+
+sub _exit_usage {
+  my $exe = basename($0);
+  say STDERR << "END_USAGE";
+Usage:
+  $exe OPTIONS
+
+Options:
+  --command|-c       command to executed against each distribution
+  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
+                     from CPAN::Mini config file)
+  --help|-h          this usage info 
+  --version|-V       visitcpan program version
+END_USAGE
+  return 1;
+}
+
+sub _exit_version {
+  say STDERR basename($0) . ": $VERSION";
+  return 1
 }
 
 1;

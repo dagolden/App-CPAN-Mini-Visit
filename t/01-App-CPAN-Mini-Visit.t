@@ -15,7 +15,7 @@ use File::Spec ();
 use File::Temp qw/tempdir/;
 use Test::More;
 
-plan tests => 13;
+plan tests => 15;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -85,7 +85,26 @@ local $ENV{HOME} = $tempdir;
 }
 
 # missing minicpan directory should have error
-_create_minicpanrc("local: doesntexist");
+my $bad_minicpan = 'doesntexist';
+_create_minicpanrc("local: $bad_minicpan");
+{
+  my $label = "missing minicpan dir";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run( )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  is( $err, undef, "[$label] no exception" );
+  like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
+    "[$label] error message correct" 
+  );
+}
+
+# badly structured minicpan directory should have error
+$bad_minicpan = File::Spec->catdir($tempdir, 'CPAN');
+mkdir $bad_minicpan;
+_create_minicpanrc("local: $bad_minicpan");
 {
   my $label = "bad minicpan dir";
   try eval { 
@@ -95,12 +114,11 @@ _create_minicpanrc("local: doesntexist");
   };
   catch my $err;
   is( $err, undef, "[$label] no exception" );
-  like( $stderr, qr/^Directory 'doesntexist' does not appear to be a CPAN repository/, 
+  like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
   );
 }
 
-# badly structured minicpan directory should have error
 
 # good minicpan directory (from options -- overrides bad config)
 

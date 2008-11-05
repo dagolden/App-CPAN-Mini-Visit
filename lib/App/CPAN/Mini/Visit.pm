@@ -56,7 +56,8 @@ sub run {
   return _exit_no_minicpan() if ! $opt->get_minicpan;
   return _exit_bad_minicpan($opt->get_minicpan) if ! -d $opt->get_minicpan;
 
-  # e.g. check for $dir/authors/id directory
+  my $id_dir = File::Spec->catdir($opt->get_minicpan, qw/authors id/);
+  return _exit_bad_minicpan($opt->get_minicpan) if ! -d $id_dir;
 
   # find all distribution tarballs in authors/id/...
 

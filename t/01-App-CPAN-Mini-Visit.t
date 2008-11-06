@@ -15,7 +15,7 @@ use File::Spec ();
 use File::Temp qw/tempdir/;
 use Test::More;
 
-plan tests => 15;
+plan tests => 12;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -45,8 +45,9 @@ for my $opt ( qw/ --version -V / ) {
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  is( $err, undef, "[$opt] no exception" );
-  is( $stderr, "$exe: $App::CPAN::Mini::Visit::VERSION\n", "[$opt] correct" );
+  is( $stderr, "$exe: $App::CPAN::Mini::Visit::VERSION\n", 
+    "[$opt] correct" 
+  ) or diag $err;
 }
 
 #--------------------------------------------------------------------------#
@@ -60,8 +61,7 @@ for my $opt ( qw/ --help -h / ) {
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  is( $err, undef, "[$opt] no exception" );
-  like( $stderr, qr/^Usage:/, "[$opt] correct" );
+  like( $stderr, qr/^Usage:/, "[$opt] correct" ) or diag $err;
 }
 
 #--------------------------------------------------------------------------#
@@ -80,8 +80,9 @@ local $ENV{HOME} = $tempdir;
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  is( $err, undef, "[$label] no exception" );
-  like( $stderr, qr/^No minicpan configured/, "[$label] error message correct" );
+  like( $stderr, qr/^No minicpan configured/, 
+    "[$label] error message correct" 
+  ) or diag $err;
 }
 
 # missing minicpan directory should have error
@@ -95,10 +96,9 @@ _create_minicpanrc("local: $bad_minicpan");
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  is( $err, undef, "[$label] no exception" );
   like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
-  );
+  ) or diag $err;
 }
 
 # badly structured minicpan directory should have error
@@ -113,14 +113,47 @@ _create_minicpanrc("local: $bad_minicpan");
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  is( $err, undef, "[$label] no exception" );
   like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
-  );
+  ) or diag $err;
 }
 
-
 # good minicpan directory (from options -- overrides bad config)
+for my $opt ( qw/ --minicpan -m / ) {
+  my $label = "good $opt=...";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run("$opt=$minicpan")
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  is( $stderr, "", "[$label] no error message" ) or diag $err;
+}
 
 # good minicpan directory (from config only)
+_create_minicpanrc("local: $minicpan");
+{
+  my $label = "good minicpan from config";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run()
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  is( $stderr, "", "[$label] no error message" ) or diag $err;
+}
+
+# bad minicpan directory (from options -- overrides bad config)
+{
+  my $label = "bad -m=...";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run( "-m=$bad_minicpan" )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
+    "[$label] error message correct" 
+  ) or diag $err;
+}
 

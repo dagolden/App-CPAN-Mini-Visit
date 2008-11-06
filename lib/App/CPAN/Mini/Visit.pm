@@ -11,7 +11,6 @@ use warnings;
 
 use version; our $VERSION = qv("v0.1.0");
 
-use File::HomeDir; #XXX hack because CPAN::Mini doesn't
 use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;

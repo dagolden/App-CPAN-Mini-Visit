@@ -22,7 +22,7 @@ my $build = $class->new(
     },
     requires => {
       'perl' => 5.010,
-      'CPAN::Mini' => 0.569,
+      'CPAN::Mini' => 0.572,
       'Exception::Class::TryCatch' => 1.12,
       'File::Basename' => 0,
       'Getopt::Lucid' => 0.16,
@@ -31,6 +31,10 @@ my $build = $class->new(
       'version' => 0.74, 
     },
     build_requires => {
+      'File::Spec' => 3.2701, 
+      'File::Temp' => 0.20, 
+      'IO::CaptureOutput' => 1.0801,
+      'IO::File' => 0,
       'Test::More' => 0.62, 
     },
     meta_add            => { 

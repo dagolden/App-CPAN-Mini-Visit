@@ -10,7 +10,7 @@ resources:
 configure_requires:
   version: 0.74
 requires:
-  CPAN::Mini: 0.569
+  CPAN::Mini: 0.572
   Exception::Class::TryCatch: 1.12
   File::Basename: 0
   Getopt::Lucid: 0.16
@@ -19,6 +19,10 @@ requires:
   perl: 5.01
   version: 0.74
 build_requires:
+  File::Spec: 3.2701
+  File::Temp: 0.2
+  IO::CaptureOutput: 1.0801
+  IO::File: 0
   Test::More: 0.62
 provides:
   App::CPAN::Mini::Visit:

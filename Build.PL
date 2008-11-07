@@ -26,12 +26,11 @@ my $build = $class->new(
       'Exception::Class::TryCatch' => 1.12,
       'File::Basename' => 0,
       'Getopt::Lucid' => 0.16,
-      'Path::Class' => 0.16,
+      'File::Spec' => 3.2701, 
       'Pod::Usage' => 1.35, 
       'version' => 0.74, 
     },
     build_requires => {
-      'File::Spec' => 3.2701, 
       'File::Temp' => 0.20, 
       'IO::CaptureOutput' => 1.0801,
       'IO::File' => 0,

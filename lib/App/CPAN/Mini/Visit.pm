@@ -15,8 +15,8 @@ use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;
 use File::Find qw/ find /;
+use File::Spec ();
 use Getopt::Lucid qw/ :all /;
-use Path::Class ();
 use Pod::Usage qw/ pod2usage /;
 
 my @option_spec = (

@@ -166,7 +166,7 @@ App::CPAN::Mini::Visit - Add abstract here
 
 = VERSION
 
-This documentation describes version %%VERSION%%.
+This documentation describes %%VERSION%%.
 
 = SYNOPSIS
 

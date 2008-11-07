@@ -8,7 +8,7 @@ App::CPAN::Mini::Visit - Add abstract here
 
 =head1 VERSION
 
-This documentation describes version v0.1.0.
+This documentation describes v0.1.0.
 
 =head1 SYNOPSIS
 

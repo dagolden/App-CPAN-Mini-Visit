@@ -13,33 +13,47 @@ __END__
 
 = NAME
 
-visitcpan - run a program against each tarball in a minicpan
+visitcpan - explore each distribution in a minicpan repository
 
 = VERSION
 
-This documentation refers to version %%VERSION%%.
+This documentation refers to %%VERSION%%.
 
 = SYNOPSIS
 
-    $ visitcpan OPTIONS
+    $ visitcpan [OPTIONS] [PROGRAM]
+
+    $ visitcpan [OPTIONS] -- [PROGRAM] [PROGRAM ARGS]
 
 = DESCRIPTION
 
-This program executes code against each distribution in a minicpan repository.
-For each distribution tarball, it will:
+This program executes programs against each distribution in a minicpan
+repository.  For each distribution tarball, it will:
 
 * unarchive the distribution tarball to a temporary directory 
-* change the the temporary directory
-* execute user-specified code
+* change to the temporary directory
+* execute a user-specified program
 * return to the original directory
 * clean up the temporary directory
 
+By default, {visitcpan} will use a local minicpan repository specified in a 
+.minicpanrc file.  If no program is specified, {visitcpan} will instead 
+produce a listing of distributions, one per line, that can be piped to 
+other programs for analysis.
+
+To avoid conflicts between {visitcpan} options and arguments provided to
+the program to run, separate minicpan options from the program using '--'
+(two dashes).
+
 = OPTIONS
 
- --command|-c       command to executed against each distribution
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
+
+ --                 indicates the end of options for visitcpan
+
  --help|-h          this usage info 
+
  --version|-V       visitcpan program version
 
 = BUGS
@@ -89,20 +103,22 @@ limitations under the License.
 
 =head1 NAME
 
-visitcpan - run a program against each tarball in a minicpan
+visitcpan - explore each distribution in a minicpan repository
 
 =head1 VERSION
 
-This documentation refers to version v0.1.0.
+This documentation refers to v0.1.0.
 
 =head1 SYNOPSIS
 
-     $ visitcpan OPTIONS
+     $ visitcpan [OPTIONS] [PROGRAM]
+ 
+     $ visitcpan [OPTIONS] -- [PROGRAM] [PROGRAM ARGS]
 
 =head1 DESCRIPTION
 
-This program executes code against each distribution in a minicpan repository.
-For each distribution tarball, it will:
+This program executes programs against each distribution in a minicpan
+repository.  For each distribution tarball, it will:
 
 =over
 
@@ -112,11 +128,11 @@ unarchive the distribution tarball to a temporary directory
 
 =item *
 
-change the the temporary directory
+change to the temporary directory
 
 =item *
 
-execute user-specified code
+execute a user-specified program
 
 =item *
 
@@ -128,12 +144,24 @@ clean up the temporary directory
 
 =back
 
+By default, C<<< visitcpan >>> will use a local minicpan repository specified in a 
+.minicpanrc file.  If no program is specified, C<<< visitcpan >>> will instead 
+produce a listing of distributions, one per line, that can be piped to 
+other programs for analysis.
+
+To avoid conflicts between C<<< visitcpan >>> options and arguments provided to
+the program to run, separate minicpan options from the program using '--'
+(two dashes).
+
 =head1 OPTIONS
 
-  --command|-c       command to executed against each distribution
   --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                      from CPAN::Mini config file)
+ 
+  --                 indicates the end of options for visitcpan
+ 
   --help|-h          this usage info 
+ 
   --version|-V       visitcpan program version
 
 =head1 BUGS

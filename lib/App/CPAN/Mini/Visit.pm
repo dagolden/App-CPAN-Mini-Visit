@@ -15,15 +15,20 @@ use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;
 use File::Find qw/ find /;
-use File::Spec ();
+use File::pushd qw/ tempd /;
+use Path::Class qw/ dir file /;
 use Getopt::Lucid qw/ :all /;
 use Pod::Usage qw/ pod2usage /;
+
+use Archive::Extract ();
+$Archive::Extract::PREFER_BIN = 1;
+$Archive::Extract::WARN = 1;
+$Archive::Extract::DEBUG = 0;
 
 my @option_spec = (
   Switch("help|h"),
   Switch("version|V"),
   Param("minicpan|m"),
-  Param("command|c"),
 );
 
 sub run {
@@ -56,11 +61,11 @@ sub run {
   return _exit_no_minicpan() if ! $opt->get_minicpan;
   return _exit_bad_minicpan($opt->get_minicpan) if ! -d $opt->get_minicpan;
 
-  my $id_dir = File::Spec->catdir($opt->get_minicpan, qw/authors id/);
+  my $id_dir = dir($opt->get_minicpan, qw/authors id/);
   return _exit_bad_minicpan($opt->get_minicpan) if ! -d $id_dir;
 
-  # find all distribution tarballs in authors/id/...
-  my $archive_re = qr{\.(?:tar\.(?:bz2|gz|Z)|t(?:gz|bz)|zip|pm.gz)$}i;
+  # process all distribution tarballs in authors/id/...
+  my $archive_re = qr{\.(?:tar\.(?:bz2|gz|Z)|t(?:gz|bz)|zip|pm\.gz)$}i;
 
   find( 
     {
@@ -69,10 +74,17 @@ sub run {
       preprocess => sub { return sort @_ },
       wanted => sub {
         return unless /$archive_re/;
-        say;
+        # run code if program/args given otherwise print name
+        if ( @args) {
+          return if $_ =~ /pm\.gz$/io; # not an archive, just a file
+          _visit( $_, @args );
+        }
+        else {
+          say; 
+        }
       },
     },
-    $opt->get_minicpan
+    dir( $opt->get_minicpan )->absolute,
   );
 
   return 0; # exit code
@@ -115,6 +127,32 @@ sub _exit_version {
   return 1
 }
 
+sub _visit {
+  my ($archive, @cmd_line) = @_;
+  
+  my $tempd = tempd;
+
+  my $ae = Archive::Extract->new( archive => $archive );
+  if ( ! $ae->extract ) {
+    warn "Couldn't extract '$archive'\n";
+    return;
+  }
+  
+  # most distributions unpack a single directory that we must enter
+  # but some behave poorly and unpack to the current directory
+  my @children = dir()->children;
+  if ( @children == 1 && -d $children[0] ) {
+    chdir $children[0];
+  }
+  
+  # execute command
+  system( @cmd_line );
+  if ( $? ) {
+    warn "Error running '@cmd_line': $!\n";
+  }
+
+  return;
+}
 
 1;
 

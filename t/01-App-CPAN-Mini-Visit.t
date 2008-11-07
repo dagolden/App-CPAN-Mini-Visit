@@ -9,13 +9,14 @@ use strict;
 use warnings;
 use Exception::Class::TryCatch qw/try catch/;
 use File::Basename qw/basename/;
+use File::Find qw/find/;
 use IO::CaptureOutput qw/capture/;
 use IO::File;
-use File::Spec ();
+use Path::Class;
 use File::Temp qw/tempdir/;
 use Test::More;
 
-plan tests => 12;
+plan tests => 15;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -26,10 +27,21 @@ require_ok( 'App::CPAN::Mini::Visit' );
 my $exe = basename $0;
 my ($stdout, $stderr);
 my $tempdir = tempdir( CLEANUP => 1 );
-my $minicpan = File::Spec->catdir(qw/t CPAN/);
+my $minicpan = dir(qw/t CPAN/);
+my $archive_re = qr{\.(?:tar\.(?:bz2|gz|Z)|t(?:gz|bz)|zip|pm\.gz)$}i;
+
+my @files;
+find( 
+  { follow => 0, 
+    no_chdir => 1, 
+    wanted => sub { push @files, $_ if -f && /\.tar\.gz$/ },
+  },
+  dir( $minicpan, qw/ authors id / )->absolute
+);
+@files = sort @files;
 
 sub _create_minicpanrc {
-  my $rc_fh = IO::File->new(File::Spec->catfile($tempdir,'.minicpanrc'), ">");
+  my $rc_fh = IO::File->new(file($tempdir,'.minicpanrc'), ">");
   say {$rc_fh} $_[0] || '';
   close $rc_fh;
 }
@@ -102,7 +114,7 @@ _create_minicpanrc("local: $bad_minicpan");
 }
 
 # badly structured minicpan directory should have error
-$bad_minicpan = File::Spec->catdir($tempdir, 'CPAN');
+$bad_minicpan = dir($tempdir, 'CPAN');
 mkdir $bad_minicpan;
 _create_minicpanrc("local: $bad_minicpan");
 {
@@ -155,5 +167,47 @@ _create_minicpanrc("local: $minicpan");
   like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
   ) or diag $err;
+}
+
+#--------------------------------------------------------------------------#
+# default behavior -- list files
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "list files";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run()
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  my @found = split /\n/, $stdout;
+  is_deeply( \@found, \@files, "[$label] listing correct" );
+}
+
+#--------------------------------------------------------------------------#
+# run program
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "pwd";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run(
+        "--", $^X, '-e', 'use Cwd qw/abs_path/; print abs_path(".") . "\n"'
+      )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  my @found = 
+    map { dir($_)->relative( dir($_)->parent ) } split /\n/, $stdout;
+  my @expect = map { 
+    my $base = file($_)->basename; 
+    $base =~ s{$archive_re}{}; 
+    $base;
+  } @files;
+  ok( length $stdout, "[$label] got stdout" ) or diag $err;
+  is_deeply( \@found, \@expect, "[$label] listing correct" ) 
+    or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
 }
 

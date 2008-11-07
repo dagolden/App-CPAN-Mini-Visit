@@ -3,11 +3,10 @@
 #--------------------------------------------------------------------------#
 
 - Decide on usage.  E.g.
-  $ visitcpan -c "cmd opt1 opt2 ..."
-
-  $ visitcpan -e "perl 1-liner..."
   
-  $ visitcpan program
+  $ visitcpan [OPTIONS] program
+
+  $ visitcpan [OPTIONS] -- program program-opts
 
 - Filtering
   - -f "regex" matched against AUTHOR/DistName-version.suffix

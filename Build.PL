@@ -22,13 +22,16 @@ my $build = $class->new(
     },
     requires => {
       'perl' => 5.010,
+      'Archive::Extract' => 0.28, 
       'CPAN::Mini' => 0.572,
       'Exception::Class::TryCatch' => 1.12,
       'File::Basename' => 0,
+      'File::Find' => 0,
+      'File::pushd' => 1.00,
       'Getopt::Lucid' => 0.16,
-      'File::Spec' => 3.2701, 
+      'Path::Class' => 0.16,
       'Pod::Usage' => 1.35, 
-      'version' => 0.74, 
+      'version' => 0.74,  
     },
     build_requires => {
       'File::Temp' => 0.20, 

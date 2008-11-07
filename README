@@ -2,7 +2,7 @@ NAME
     App::CPAN::Mini::Visit - Add abstract here
 
 VERSION
-    This documentation describes version v0.1.0.
+    This documentation describes v0.1.0.
 
 SYNOPSIS
          use App::CPAN::Mini::Visit;

@@ -10,16 +10,18 @@ resources:
 configure_requires:
   version: 0.74
 requires:
+  Archive::Extract: 0.28
   CPAN::Mini: 0.572
   Exception::Class::TryCatch: 1.12
   File::Basename: 0
+  File::Find: 0
+  File::pushd: 1
   Getopt::Lucid: 0.16
   Path::Class: 0.16
   Pod::Usage: 1.35
   perl: 5.01
   version: 0.74
 build_requires:
-  File::Spec: 3.2701
   File::Temp: 0.2
   IO::CaptureOutput: 1.0801
   IO::File: 0

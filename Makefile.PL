@@ -13,13 +13,15 @@ WriteMakefile
           'PREREQ_PM' => {
                            'IO::File' => 0,
                            'Pod::Usage' => '1.35',
+                           'File::pushd' => '1',
                            'version' => '0.74',
                            'IO::CaptureOutput' => '1.0801',
-                           'File::Spec' => '3.2701',
                            'Exception::Class::TryCatch' => '1.12',
                            'Test::More' => '0.62',
                            'CPAN::Mini' => '0.572',
                            'Getopt::Lucid' => '0.16',
+                           'File::Find' => 0,
+                           'Archive::Extract' => '0.28',
                            'File::Temp' => '0.2',
                            'Path::Class' => '0.16',
                            'File::Basename' => 0

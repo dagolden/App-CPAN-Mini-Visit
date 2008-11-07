@@ -14,6 +14,7 @@ use version; our $VERSION = qv("v0.1.0");
 use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;
+use File::Find::Rule ();
 use Getopt::Lucid qw/ :all /;
 use Path::Class ();
 use Pod::Usage qw/ pod2usage /;
@@ -59,8 +60,11 @@ sub run {
   return _exit_bad_minicpan($opt->get_minicpan) if ! -d $id_dir;
 
   # find all distribution tarballs in authors/id/...
+  my $archive_re = qr{\.(?:tar\.(?:bz2|gz|Z)|t(?:gz|bz)|zip|pm.gz)$}i;
+  my @tarballs = sort File::Find::Rule->file->name( $archive_re )->in( $opt->get_minicpan );
 
   # iterate over each distribution
+  say for @tarballs;
 }
 
 sub _exit_no_minicpan {
@@ -99,6 +103,7 @@ sub _exit_version {
   say STDERR basename($0) . ": $VERSION";
   return 1
 }
+
 
 1;
 

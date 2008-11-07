@@ -3,7 +3,7 @@ name: App-CPAN-Mini-Visit
 version: v0.1.0
 author:
   - 'David Golden <dagolden@cpan.org>'
-abstract: Add abstract here
+abstract: explore each distribution in a minicpan repository
 license: apache
 resources:
   license: http://apache.org/licenses/LICENSE-2.0

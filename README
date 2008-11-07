@@ -1,14 +1,27 @@
 NAME
-    App::CPAN::Mini::Visit - Add abstract here
+    App::CPAN::Mini::Visit - explore each distribution in a minicpan
+    repository
 
 VERSION
     This documentation describes v0.1.0.
 
 SYNOPSIS
+         #!/usr/bin/perl
          use App::CPAN::Mini::Visit;
+         exit App::CPAN::Mini::Visit->run;
 
 DESCRIPTION
+    This module contains the guts of the visitcpan program. See
+    documentation of that program for details on features and command line
+    options.
+
 USAGE
+  "run()"
+         exit App::CPAN::Mini::Visit->run();
+
+    Executes the program, processing command line arguments and traversing a
+    minicpan repository. Returns an exit code.
+
 BUGS
     Please report any bugs or feature using the CPAN Request Tracker. Bugs
     can be submitted through the web interface at
@@ -18,6 +31,8 @@ BUGS
     to an existing test-file that illustrates the bug or desired feature.
 
 SEE ALSO
+    *   CPAN::Mini
+
 AUTHOR
     David A. Golden (DAGOLDEN)
 

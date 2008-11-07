@@ -110,14 +110,20 @@ sub _exit_usage {
   my $exe = basename($0);
   say STDERR << "END_USAGE";
 Usage:
-  $exe OPTIONS
+  $exe [OPTIONS] [PROGRAM]
+
+  $exe [OPTIONS] -- [PROGRAM] [PROGRAM ARGS]
 
 Options:
-  --command|-c       command to executed against each distribution
-  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
-                     from CPAN::Mini config file)
-  --help|-h          this usage info 
-  --version|-V       visitcpan program version
+ --minicpan|-m      directory of a minicpan (defaults to local minicpan 
+                    from CPAN::Mini config file)
+
+ --                 indicates the end of options for $exe
+
+ --help|-h          this usage info 
+
+ --version|-V       $exe program version
+
 END_USAGE
   return 1;
 }
@@ -162,7 +168,7 @@ __END__
 
 = NAME
 
-App::CPAN::Mini::Visit - Add abstract here
+App::CPAN::Mini::Visit - explore each distribution in a minicpan repository
 
 = VERSION
 
@@ -170,13 +176,23 @@ This documentation describes %%VERSION%%.
 
 = SYNOPSIS
 
+    #!/usr/bin/perl
     use App::CPAN::Mini::Visit;
+    exit App::CPAN::Mini::Visit->run;
 
 = DESCRIPTION
 
+This module contains the guts of the [visitcpan] program.  See documentation of
+that program for details on features and command line options.
 
 = USAGE
 
+== {run()}
+
+    exit App::CPAN::Mini::Visit->run();
+
+Executes the program, processing command line arguments and traversing
+a minicpan repository.  Returns an exit code.
 
 = BUGS
 
@@ -189,6 +205,7 @@ existing test-file that illustrates the bug or desired feature.
 
 = SEE ALSO
 
+* [CPAN::Mini]
 
 = AUTHOR
 

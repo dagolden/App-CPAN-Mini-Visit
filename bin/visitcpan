@@ -27,23 +27,26 @@ This documentation refers to %%VERSION%%.
 
 = DESCRIPTION
 
-This program executes programs against each distribution in a minicpan
-repository.  For each distribution tarball, it will:
+This program executes other programs against each distribution in a minicpan
+repository.  Given a program to run, for each distribution archive in the
+repository, it will:
 
-* unarchive the distribution tarball to a temporary directory 
+* extract the distribution archive to a temporary directory 
 * change to the temporary directory
-* execute a user-specified program
+* execute the user-specified program
 * return to the original directory
 * clean up the temporary directory
 
-By default, {visitcpan} will use a local minicpan repository specified in a 
-.minicpanrc file.  If no program is specified, {visitcpan} will instead 
-produce a listing of distributions, one per line, that can be piped to 
-other programs for analysis.
+If no program to run is provided, {visitcpan} will instead produce a listing of
+distribution files, one per line, that can be piped to other programs for
+analysis.
 
 To avoid conflicts between {visitcpan} options and arguments provided to
-the program to run, separate minicpan options from the program using '--'
-(two dashes).
+the program to run, use two dashes ('--') to separate minicpan options 
+from other arguments.
+
+By default, {visitcpan} will use a local minicpan repository as defined 
+in a .minicpanrc file. 
 
 = OPTIONS
 
@@ -117,14 +120,15 @@ This documentation refers to v0.1.0.
 
 =head1 DESCRIPTION
 
-This program executes programs against each distribution in a minicpan
-repository.  For each distribution tarball, it will:
+This program executes other programs against each distribution in a minicpan
+repository.  Given a program to run, for each distribution archive in the
+repository, it will:
 
 =over
 
 =item *
 
-unarchive the distribution tarball to a temporary directory 
+extract the distribution archive to a temporary directory 
 
 =item *
 
@@ -132,7 +136,7 @@ change to the temporary directory
 
 =item *
 
-execute a user-specified program
+execute the user-specified program
 
 =item *
 
@@ -144,14 +148,16 @@ clean up the temporary directory
 
 =back
 
-By default, C<<< visitcpan >>> will use a local minicpan repository specified in a 
-.minicpanrc file.  If no program is specified, C<<< visitcpan >>> will instead 
-produce a listing of distributions, one per line, that can be piped to 
-other programs for analysis.
+If no program to run is provided, C<<< visitcpan >>> will instead produce a listing of
+distribution files, one per line, that can be piped to other programs for
+analysis.
 
 To avoid conflicts between C<<< visitcpan >>> options and arguments provided to
-the program to run, separate minicpan options from the program using '--'
-(two dashes).
+the program to run, use two dashes ('--') to separate minicpan options 
+from other arguments.
+
+By default, C<<< visitcpan >>> will use a local minicpan repository as defined 
+in a .minicpanrc file. 
 
 =head1 OPTIONS
 

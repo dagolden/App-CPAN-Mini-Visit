@@ -8,3 +8,6 @@ STDERR
 STDOUT
 XS
 html
+minicpan
+minicpanrc
+visitcpan

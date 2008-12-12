@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use version; our $VERSION = qv("v0.2.0");
+use version; our $VERSION = qv("v0.3.0");
 
 require App::CPAN::Mini::Visit;
 exit App::CPAN::Mini::Visit->run(@ARGV);
@@ -113,7 +113,7 @@ visitcpan - explore each distribution in a minicpan repository
 
 =head1 VERSION
 
-This documentation refers to v0.2.0.
+This documentation refers to v0.3.0.
 
 =head1 SYNOPSIS
 

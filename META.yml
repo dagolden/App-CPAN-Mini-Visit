@@ -1,6 +1,6 @@
 ---
 name: App-CPAN-Mini-Visit
-version: v0.2.0
+version: v0.3.0
 author:
   - 'David Golden <dagolden@cpan.org>'
 abstract: explore each distribution in a minicpan repository
@@ -29,7 +29,7 @@ build_requires:
 provides:
   App::CPAN::Mini::Visit:
     file: lib/App/CPAN/Mini/Visit.pm
-    version: v0.2.0
+    version: v0.3.0
 generated_by: Module::Build version 0.3
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

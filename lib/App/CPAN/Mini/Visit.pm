@@ -28,6 +28,7 @@ $Archive::Extract::DEBUG = 0;
 my @option_spec = (
   Switch("help|h"),
   Switch("version|V"),
+  Param("append|a", qr/(?:^$|(?:^path|dist$))/ )->default(''),
   Param("minicpan|m"),
 );
 
@@ -67,6 +68,8 @@ sub run {
   # process all distribution tarballs in authors/id/...
   my $archive_re = qr{\.(?:tar\.(?:bz2|gz|Z)|t(?:gz|bz)|zip|pm\.gz)$}i;
 
+  my $minicpan = dir( $opt->get_minicpan )->absolute;
+  
   find( 
     {
       no_chdir => 1,
@@ -75,16 +78,28 @@ sub run {
       wanted => sub {
         return unless /$archive_re/;
         # run code if program/args given otherwise print name
-        if ( @args) {
+        if ( @args ) {
           return if $_ =~ /pm\.gz$/io; # not an archive, just a file
-          _visit( $_, @args );
+          my @cmd = @args;
+          if ( $opt->get_append ) {
+            if ( $opt->get_append eq 'dist' ) {
+              my $distname = $_;
+              my $prefix = dir( $minicpan, qw/authors id/ );
+              $distname =~ s{^$prefix[\\/].[\\/]..[\\/]}{};
+              push @cmd, $distname;
+            }
+            else {
+              push @cmd, $_;
+            }
+          }
+          _visit( $_, @cmd );
         }
         else {
           say; 
         }
       },
     },
-    dir( $opt->get_minicpan )->absolute,
+    $minicpan
   );
 
   return 0; # exit code
@@ -115,6 +130,10 @@ Usage:
   $exe [OPTIONS] -- [PROGRAM] [PROGRAM ARGS]
 
 Options:
+
+ --append|-a        --append=dist -> append distname after PROGRAM ARGS
+                    --append=path -> append tarball path after PROGRAM ARGS
+
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 

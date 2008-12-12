@@ -16,7 +16,7 @@ use Path::Class;
 use File::Temp qw/tempdir/;
 use Test::More;
 
-plan tests => 15;
+plan tests => 23;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -211,3 +211,49 @@ _create_minicpanrc("local: $minicpan");
     or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
 }
 
+#--------------------------------------------------------------------------#
+# --append path 
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "path";
+  for my $opt ( qw/ --append -a / ) {
+    try eval { 
+      capture sub {
+        App::CPAN::Mini::Visit->run(
+          "$opt=path", "--", $^X, '-e', 'print shift(@ARGV) . "\n"'
+        )
+      } => \$stdout, \$stderr;
+    };
+    catch my $err;
+    my @found = split /\n/, $stdout;
+    my @expect = @files;
+    ok( length $stdout, "[$label] ($opt) got stdout" ) or diag $err;
+    is_deeply( \@found, \@expect, "[$label] ($opt) listing correct" ) 
+      or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
+  }
+}
+
+#--------------------------------------------------------------------------#
+# --append dist
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "dist";
+  for my $opt ( qw/ --append -a / ) {
+    try eval { 
+      capture sub {
+        App::CPAN::Mini::Visit->run(
+          "$opt=dist", "--", $^X, '-e', 'print shift(@ARGV) . "\n"'
+        )
+      } => \$stdout, \$stderr;
+    };
+    catch my $err;
+    my @found = split /\n/, $stdout;
+    my $prefix = dir( $minicpan, qw/ authors id / )->absolute;
+    my @expect = map{ s{$prefix[/\\].[/\\]..[/\\]}{}; $_ } @files;
+    ok( length $stdout, "[$label] ($opt) got stdout" ) or diag $err;
+    is_deeply( \@found, \@expect, "[$label] ($opt) listing correct" ) 
+      or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
+  }
+}

@@ -50,6 +50,9 @@ in a .minicpanrc file.
 
 = OPTIONS
 
+ --append|-a        --append=dist -> append distname after PROGRAM ARGS
+                    --append=path -> append tarball path after PROGRAM ARGS
+
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 

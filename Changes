@@ -7,7 +7,7 @@
 
 Revision history for App-CPAN-Mini-Visit
 
-v0.1.1
+v0.2.0 Fri Dec 12 01:40:23 EST 2008
     - add "--append" option to provide path or dist name as an argument
 
 v0.1.0 Fri Nov  7 15:06:55 EST 2008

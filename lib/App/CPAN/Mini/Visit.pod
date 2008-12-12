@@ -8,7 +8,7 @@ App::CPAN::Mini::Visit - explore each distribution in a minicpan repository
 
 =head1 VERSION
 
-This documentation describes v0.1.1.
+This documentation describes v0.2.0.
 
 =head1 SYNOPSIS
 

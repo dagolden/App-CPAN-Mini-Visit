@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use version; our $VERSION = qv("v0.1.0");
+use version; our $VERSION = qv("v0.2.0");
 
 require App::CPAN::Mini::Visit;
 exit App::CPAN::Mini::Visit->run(@ARGV);
@@ -113,7 +113,7 @@ visitcpan - explore each distribution in a minicpan repository
 
 =head1 VERSION
 
-This documentation refers to v0.1.1.
+This documentation refers to v0.2.0.
 
 =head1 SYNOPSIS
 
@@ -164,6 +164,9 @@ in a .minicpanrc file.
 
 =head1 OPTIONS
 
+  --append|-a        --append=dist -> append distname after PROGRAM ARGS
+                     --append=path -> append tarball path after PROGRAM ARGS
+ 
   --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                      from CPAN::Mini config file)
  

@@ -56,6 +56,8 @@ in a .minicpanrc file.
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 
+ --quiet|q          silence warnings and suppress STDERR from tar
+
  --                 indicates the end of options for visitcpan
 
  --help|-h          this usage info 
@@ -70,6 +72,12 @@ Bugs can be submitted through the web interface at
 
 When submitting a bug or request, please include a test-file or a patch 
 to an existing test-file that illustrates the bug or desired feature.
+
+= SEE ALSO
+
+[CPAN::Mini::Extract] creates a minicpan with archives extracted.  Analyzing
+an extracted tree will be faster than {visitcpan}, but the tree will take
+up substantially more space on disk.
 
 = AUTHOR
 
@@ -170,6 +178,8 @@ in a .minicpanrc file.
   --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                      from CPAN::Mini config file)
  
+  --quiet|q          silence warnings and suppress STDERR from tar
+ 
   --                 indicates the end of options for visitcpan
  
   --help|-h          this usage info 
@@ -184,6 +194,12 @@ L<http://rt.cpan.org/Dist/Display.html?Queue=App-CPAN-Mini-Visit>
 
 When submitting a bug or request, please include a test-file or a patch 
 to an existing test-file that illustrates the bug or desired feature.
+
+=head1 SEE ALSO
+
+L<CPAN::Mini::Extract> creates a minicpan with archives extracted.  Analyzing
+an extracted tree will be faster than C<<< visitcpan >>>, but the tree will take
+up substantially more space on disk.
 
 =head1 AUTHOR
 

@@ -21,13 +21,11 @@ use Getopt::Lucid qw/ :all /;
 use Pod::Usage qw/ pod2usage /;
 
 use Archive::Extract ();
-$Archive::Extract::PREFER_BIN = 1;
-$Archive::Extract::WARN = 1;
-$Archive::Extract::DEBUG = 0;
 
 my @option_spec = (
   Switch("help|h"),
   Switch("version|V"),
+  Switch("quiet|q"),
   Param("append|a", qr/(?:^$|(?:^path|dist$))/ )->default(''),
   Param("minicpan|m"),
 );
@@ -49,6 +47,13 @@ sub run {
   # handle "help" and "version" options
   return _exit_usage() if $opt->get_help;
   return _exit_version() if $opt->get_version;
+
+  # Set Archive::Extract globals
+  local $Archive::Extract::DEBUG = 0;
+  local $Archive::Extract::PREFER_BIN = 1;
+  local $Archive::Extract::WARN = $opt->get_quiet ? 0 : 1;
+
+  # if quiet suppress warnings from Archive::Tar, etc.
 
   # locate minicpan directory
   if ( ! $opt->get_minicpan ) {
@@ -137,6 +142,8 @@ Options:
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 
+ --quiet|q          silence warnings and suppress STDERR from tar
+
  --                 indicates the end of options for $exe
 
  --help|-h          this usage info 
@@ -158,8 +165,25 @@ sub _visit {
   my $tempd = tempd;
 
   my $ae = Archive::Extract->new( archive => $archive );
-  if ( ! $ae->extract ) {
-    warn "Couldn't extract '$archive'\n";
+
+  my $olderr;
+
+  # stderr > /dev/null if quiet
+  if ( ! $Archive::Extract::WARN ) {
+    open $olderr, ">&STDERR";
+    open STDERR, ">", File::Spec->devnull;
+  }
+
+  my $extract_ok = $ae->extract;
+
+  # restore stderr if quiet
+  if ( ! $Archive::Extract::WARN ) {
+    open STDERR, ">&", $olderr;
+    close $olderr;
+  }
+
+  if ( ! $extract_ok ) {
+    warn "Couldn't extract '$archive'\n" if $Archive::Extract::WARN;
     return;
   }
   

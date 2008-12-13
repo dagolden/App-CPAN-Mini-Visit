@@ -7,11 +7,14 @@
 
 Revision history for App-CPAN-Mini-Visit
 
+v0.3.1 Fri Dec 12 19:42:21 EST 2008
+    - fixed: usage help text
+
 v0.3.0 Fri Dec 12 15:43:53 EST 2008
-    - add "--quiet" option to suppress warnings and tar errors
+    - added: "--quiet" option to suppress warnings and tar errors
 
 v0.2.0 Fri Dec 12 01:40:23 EST 2008
-    - add "--append" option to provide path or dist name as an argument
+    - added: "--append" option to provide path or dist name as an argument
 
 v0.1.0 Fri Nov  7 15:06:55 EST 2008
     - initial release

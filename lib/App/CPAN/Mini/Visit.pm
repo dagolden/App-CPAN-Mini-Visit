@@ -9,7 +9,7 @@ use 5.010;
 use strict;
 use warnings;
 
-use version; our $VERSION = qv("v0.3.0");
+use version; our $VERSION = qv("v0.3.1");
 
 use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;
@@ -132,23 +132,23 @@ sub _exit_usage {
 Usage:
   $exe [OPTIONS] [PROGRAM]
 
-  $exe [OPTIONS] -- [PROGRAM] [PROGRAM ARGS]
+  $exe [OPTIONS] -- [PROGRAM] [ARGS]
 
 Options:
 
- --append|-a        --append=dist -> append distname after PROGRAM ARGS
-                    --append=path -> append tarball path after PROGRAM ARGS
+ --append|-a        --append=dist -> append distname after ARGS
+                    --append=path -> append tarball path after ARGS
+
+ --help|-h          this usage info 
 
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 
- --quiet|q          silence warnings and suppress STDERR from tar
-
- --                 indicates the end of options for $exe
-
- --help|-h          this usage info 
+ --quiet|-q         silence warnings and suppress STDERR from tar
 
  --version|-V       $exe program version
+
+ --                 indicates the end of options for $exe
 
 END_USAGE
   return 1;

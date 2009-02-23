@@ -28,6 +28,7 @@ my @option_spec = (
   Switch("version|V"),
   Switch("quiet|q"),
   Param("append|a", qr/(?:^$|(?:^path|dist$))/ )->default(''),
+  Param("e|E"),
   Param("minicpan|m"),
 );
 
@@ -84,6 +85,9 @@ sub run {
       wanted => sub {
         return unless /$archive_re/;
         # run code if program/args given otherwise print name
+        if ( $opt->get_e ) {
+          unshift @args, $^X, '-E', $opt->get_e;
+        }
         if ( @args ) {
           return if $_ =~ /pm\.gz$/io; # not an archive, just a file
           my @cmd = @args;
@@ -140,6 +144,8 @@ Options:
  --append|-a        --append=dist -> append distname after ARGS
                     --append=path -> append tarball path after ARGS
 
+ -e|-E              run next argument via 'perl -E'
+ 
  --help|-h          this usage info 
 
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 

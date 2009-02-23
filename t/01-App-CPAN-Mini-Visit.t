@@ -16,7 +16,7 @@ use Path::Class;
 use File::Temp qw/tempdir/;
 use Test::More;
 
-plan tests => 23;
+plan tests => 27;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -195,6 +195,58 @@ _create_minicpanrc("local: $minicpan");
     capture sub {
       App::CPAN::Mini::Visit->run(
         "--", $^X, '-e', 'use Cwd qw/abs_path/; print abs_path(".") . "\n"'
+      )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  my @found = 
+    map { dir($_)->relative( dir($_)->parent ) } split /\n/, $stdout;
+  my @expect = map { 
+    my $base = file($_)->basename; 
+    $base =~ s{$archive_re}{}; 
+    $base;
+  } @files;
+  ok( length $stdout, "[$label] got stdout" ) or diag $err;
+  is_deeply( \@found, \@expect, "[$label] listing correct" ) 
+    or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
+}
+
+#--------------------------------------------------------------------------#
+# run perl -e 
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "perl-e";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run(
+        '-e', 'use Cwd qw/abs_path/; print abs_path(".") . "\n"'
+      )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  my @found = 
+    map { dir($_)->relative( dir($_)->parent ) } split /\n/, $stdout;
+  my @expect = map { 
+    my $base = file($_)->basename; 
+    $base =~ s{$archive_re}{}; 
+    $base;
+  } @files;
+  ok( length $stdout, "[$label] got stdout" ) or diag $err;
+  is_deeply( \@found, \@expect, "[$label] listing correct" ) 
+    or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
+}
+
+#--------------------------------------------------------------------------#
+# run perl -E 
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "perl-E";
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run(
+        '-E', 'use Cwd qw/abs_path/; print abs_path(".") . "\n"'
       )
     } => \$stdout, \$stderr;
   };

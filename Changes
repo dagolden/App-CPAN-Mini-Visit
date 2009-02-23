@@ -8,6 +8,9 @@
 Revision history for App-CPAN-Mini-Visit
 
 0.004
+  Added:
+    - "-e" option to act like "perl -e"
+
   Changed:
     - returned to old-style version numbers
 

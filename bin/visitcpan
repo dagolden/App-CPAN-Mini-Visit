@@ -60,11 +60,24 @@ in a .minicpanrc file.
  --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                     from CPAN::Mini config file)
 
+ --output|-o        file to save output instead of sending to terminal
+
  --quiet|-q         silence warnings and suppress STDERR from tar
 
  --version|-V       visitcpan program version
 
  --                 indicates the end of options for visitcpan
+
+= EXAMPLES
+
+  # count number of distributiosn in the minicpan
+  $ visitcpan | wc -l
+
+  # get a listing of all distributions using Build.PL
+  $ visitcpan -q -a dist -o listing.txt -e 'say shift if -f "Build.PL"'
+
+  # run a program against each distribution
+  $ visitcpan -q -- ack -a 'use version;'
 
 = BUGS
 
@@ -87,7 +100,7 @@ David A. Golden (DAGOLDEN)
 
 = COPYRIGHT AND LICENSE
 
-Copyright (c) 2008 by David A. Golden
+Copyright (c) 2008-2009 by David A. Golden
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -184,11 +197,24 @@ in a .minicpanrc file.
   --minicpan|-m      directory of a minicpan (defaults to local minicpan 
                      from CPAN::Mini config file)
  
+  --output|-o        file to save output instead of sending to terminal
+ 
   --quiet|-q         silence warnings and suppress STDERR from tar
  
   --version|-V       visitcpan program version
  
   --                 indicates the end of options for visitcpan
+
+=head1 EXAMPLES
+
+   # count number of distributiosn in the minicpan
+   $ visitcpan | wc -l
+ 
+   # get a listing of all distributions using Build.PL
+   $ visitcpan -q -a dist -o listing.txt -e 'say shift if -f "Build.PL"'
+ 
+   # run a program against each distribution
+   $ visitcpan -q -- ack -a 'use version;'
 
 =head1 BUGS
 
@@ -211,7 +237,7 @@ David A. Golden (DAGOLDEN)
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2008 by David A. Golden
+Copyright (c) 2008-2009 by David A. Golden
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

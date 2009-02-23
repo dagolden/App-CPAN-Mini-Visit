@@ -13,10 +13,10 @@ use File::Find qw/find/;
 use IO::CaptureOutput qw/capture/;
 use IO::File;
 use Path::Class;
-use File::Temp qw/tempdir/;
+use File::Temp qw/tempdir tmpnam/;
 use Test::More;
 
-plan tests => 27;
+plan tests => 30;
 
 require_ok( 'App::CPAN::Mini::Visit' );
 
@@ -303,9 +303,32 @@ _create_minicpanrc("local: $minicpan");
     catch my $err;
     my @found = split /\n/, $stdout;
     my $prefix = dir( $minicpan, qw/ authors id / )->absolute;
-    my @expect = map{ s{$prefix[/\\].[/\\]..[/\\]}{}; $_ } @files;
+    my @expect = map{ 
+      (my $file = $_ ) =~ s{$prefix[/\\].[/\\]..[/\\]}{}; 
+      $file; 
+    } @files;
     ok( length $stdout, "[$label] ($opt) got stdout" ) or diag $err;
     is_deeply( \@found, \@expect, "[$label] ($opt) listing correct" ) 
       or diag "STDOUT:\n$stdout\nSTDERR:\n$stderr\n";
   }
 }
+
+#--------------------------------------------------------------------------#
+# --output file
+#--------------------------------------------------------------------------#
+
+{
+  my $label = "output";
+  my $tempfile = tmpnam();
+  try eval { 
+    capture sub {
+      App::CPAN::Mini::Visit->run( "--output=$tempfile" )
+    } => \$stdout, \$stderr;
+  };
+  catch my $err;
+  ok( -f $tempfile, "[$label] output file created" );
+  my @found = map { chomp; $_ } do { local @ARGV = ($tempfile); <> };
+  is( $stdout, '', "[$label] saw no output on terminal" );
+  is_deeply( \@found, \@files, "[$label] listing correct" );
+}
+

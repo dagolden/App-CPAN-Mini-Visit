@@ -31,6 +31,8 @@ t/CPAN/modules/03modlist.data.gz
 t/CPAN/update-checksums.pl
 Todo
 xt/critic.t
+xt/kwalitee.t
+xt/metayaml.t
 xt/perlcriticrc
 xt/pod-coverage.t
 xt/pod-format.t

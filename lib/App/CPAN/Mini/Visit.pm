@@ -9,7 +9,8 @@ use 5.010;
 use strict;
 use warnings;
 
-use version; our $VERSION = qv("v0.3.1");
+our $VERSION = '0.004';
+$VERSION = eval $VERSION; ## no critic
 
 use CPAN::Mini ();
 use Exception::Class::TryCatch qw/ try catch /;

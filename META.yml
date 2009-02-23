@@ -1,12 +1,12 @@
 ---
 name: App-CPAN-Mini-Visit
-version: v0.3.1
+version: 0.004
 author:
   - 'David Golden <dagolden@cpan.org>'
 abstract: explore each distribution in a minicpan repository
 license: apache
 resources:
-  license: http://apache.org/licenses/LICENSE-2.0
+  license: http://www.apache.org/licenses/LICENSE-2.0.txt
 configure_requires:
   version: 0.74
 requires:
@@ -29,8 +29,8 @@ build_requires:
 provides:
   App::CPAN::Mini::Visit:
     file: lib/App/CPAN/Mini/Visit.pm
-    version: v0.3.1
-generated_by: Module::Build version 0.3
+    version: 0.004
+generated_by: Module::Build version 0.3103
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

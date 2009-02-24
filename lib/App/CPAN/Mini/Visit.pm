@@ -13,7 +13,6 @@ our $VERSION = '0.005';
 $VERSION = eval $VERSION; ## no critic
 
 use CPAN::Mini ();
-use Capture::Tiny qw/capture/;
 use Exception::Class::TryCatch qw/ try catch /;
 use File::Basename qw/ basename /;
 use File::Find qw/ find /;

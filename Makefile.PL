@@ -13,7 +13,6 @@ WriteMakefile
                            'IO::File' => 0,
                            'Pod::Usage' => '1.35',
                            'File::pushd' => '1',
-                           'version' => '0.74',
                            'IO::CaptureOutput' => '1.0801',
                            'Exception::Class::TryCatch' => '1.12',
                            'Test::More' => '0.62',

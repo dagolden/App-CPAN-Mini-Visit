@@ -7,6 +7,11 @@
 
 Revision history for App-CPAN-Mini-Visit
 
+0.005 Mon Feb 23 20:35:53 EST 2009
+  Fixed:
+    - removed Capture::Tiny dependency 
+    - removed unused version.pm prereq
+
 0.004 Mon Feb 23 08:48:49 EST 2009
   Added:
     - "-e" option to act like "perl -e"

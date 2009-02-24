@@ -17,9 +17,6 @@ my $build = $class->new(
     license => 'apache',
     create_readme => 1,
     create_makefile_pl  => 'traditional',
-    configure_requires => {
-      'version' => 0.74, 
-    },
     requires => {
       'perl' => 5.010,
       'Archive::Extract' => 0.28, 
@@ -31,7 +28,6 @@ my $build = $class->new(
       'Getopt::Lucid' => 0.16,
       'Path::Class' => 0.16,
       'Pod::Usage' => 1.35, 
-      'version' => 0.74,  
     },
     build_requires => {
       'File::Temp' => 0.20, 
@@ -46,4 +42,3 @@ my $build = $class->new(
     },
 );
 $build->create_build_script;
-

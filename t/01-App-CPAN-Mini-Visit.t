@@ -125,7 +125,9 @@ _create_minicpanrc("local: $bad_minicpan");
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
+  like(
+    $stderr,
+    qr/^Directory '\Q$bad_minicpan\E' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
   ) or diag $err;
 }
@@ -164,7 +166,9 @@ _create_minicpanrc("local: $minicpan");
     } => \$stdout, \$stderr;
   };
   catch my $err;
-  like( $stderr, qr/^Directory '$bad_minicpan' does not appear to be a CPAN repository/, 
+  like(
+    $stderr,
+    qr/^Directory '\Q$bad_minicpan\E' does not appear to be a CPAN repository/, 
     "[$label] error message correct" 
   ) or diag $err;
 }

@@ -7,6 +7,10 @@
 
 Revision history for App-CPAN-Mini-Visit
 
+0.006 Sat Oct 24 22:57:07 EDT 2009
+  Fixed:
+    - Fixed bug in testing [Ricardo Signes]
+
 0.005 Mon Feb 23 20:35:53 EST 2009
   Fixed:
     - removed Capture::Tiny dependency 

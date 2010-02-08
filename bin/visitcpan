@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use version; our $VERSION = '0.006';
+use version; our $VERSION = '0.007';
 
 require App::CPAN::Mini::Visit;
 exit App::CPAN::Mini::Visit->run(@ARGV);
@@ -136,7 +136,7 @@ visitcpan - explore each distribution in a minicpan repository
 
 =head1 VERSION
 
-This documentation refers to 0.006.
+This documentation refers to 0.007.
 
 =head1 SYNOPSIS
 

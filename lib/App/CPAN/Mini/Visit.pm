@@ -220,8 +220,8 @@ sub _visit {
   }
   
   # execute command
-  system( @cmd_line );
-  if ( $? ) {
+  my $rc = system( @cmd_line );
+  if ( $rc == -1 ) {
     warn "Error running '@cmd_line': $!\n";
   }
 

@@ -5,7 +5,7 @@
 # copy of the License from http://www.apache.org/licenses/LICENSE-2.0
 
 package App::CPAN::Mini::Visit;
-use 5.010;
+use 5.006;
 use strict;
 use warnings;
 
@@ -39,12 +39,14 @@ sub run {
   # get command line options
   my $opt = try eval { Getopt::Lucid->getopt( \@option_spec, \@args ) };
   for ( catch ) {
-    when ( $_->isa('Getopt::Lucid::Exception::ARGV') ) {
-      say;
+    if ( $_->isa('Getopt::Lucid::Exception::ARGV') ) {
+      print "$_\n"; 
       # usage stuff
       return 1;
     }
-    default { die $_ }
+    else {
+      die $_ 
+    }
   }
 
   # handle "help" and "version" options
@@ -59,7 +61,7 @@ sub run {
 
   # if -e/-E, then prepend to command
   if ( $opt->get_e ) {
-    unshift @args, $^X, '-E', $opt->get_e;
+    unshift @args, $^X, ($^X > 5.009 ? '-E' : '-e'), $opt->get_e;
   }
 
   # locate minicpan directory
@@ -115,7 +117,7 @@ sub run {
           _visit( $_, @cmd );
         }
         else {
-          say; 
+          print "$_\n"; 
         }
       },
     },
@@ -132,8 +134,9 @@ sub run {
 }
 
 sub _exit_no_minicpan {
-  say STDERR << "END_NO_MINICPAN";
+  print STDERR << "END_NO_MINICPAN";
 No minicpan configured.
+
 END_NO_MINICPAN
   return 1;
 }
@@ -141,15 +144,16 @@ END_NO_MINICPAN
 sub _exit_bad_minicpan {
   my ($dir) = @_;
   die "requires directory argument" unless defined $dir;
-  say STDERR << "END_BAD_MINICPAN";
+  print STDERR << "END_BAD_MINICPAN";
 Directory '$dir' does not appear to be a CPAN repository.
+
 END_BAD_MINICPAN
   return 1;
 }
 
 sub _exit_usage {
   my $exe = basename($0);
-  say STDERR << "END_USAGE";
+  print STDERR << "END_USAGE";
 Usage:
   $exe [OPTIONS] [PROGRAM]
 
@@ -175,12 +179,13 @@ Options:
 
  --                 indicates the end of options for $exe
 
+
 END_USAGE
   return 1;
 }
 
 sub _exit_version {
-  say STDERR basename($0) . ": $VERSION";
+  print STDERR basename($0) . ": $VERSION\n";
   return 1
 }
 

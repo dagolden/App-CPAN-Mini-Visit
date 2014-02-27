@@ -19,6 +19,9 @@ plan tests => 30;
 
 require_ok('App::CPAN::Mini::Visit');
 
+# repo won't have this set, but tarball will
+$App::CPAN::Mini::Visit::VERSION ||= 0;
+
 #--------------------------------------------------------------------------#
 # fixtures
 #--------------------------------------------------------------------------#

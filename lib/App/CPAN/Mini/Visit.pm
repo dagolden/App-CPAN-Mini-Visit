@@ -176,7 +176,7 @@ END_USAGE
 }
 
 sub _exit_version {
-    print STDERR basename($0) . ": $VERSION\n";
+    print STDERR basename($0) . ": " . ( __PACKAGE__->VERSION() || 0 ) . "\n";
     return 1;
 }
 

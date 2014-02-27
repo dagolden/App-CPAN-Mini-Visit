@@ -9,11 +9,11 @@ use warnings;
 use Exception::Class::TryCatch qw/try catch/;
 use File::Basename qw/basename/;
 use File::Find qw/find/;
-use IO::CaptureOutput qw/capture/;
+use IO::CaptureOutput 1.0801 qw/capture/;
 use IO::File;
 use Path::Class;
-use File::Temp qw/tempdir tmpnam/;
-use Test::More;
+use File::Temp 0.20 qw/tempdir tmpnam/;
+use Test::More 0.62;
 
 plan tests => 30;
 

@@ -1,27 +1,21 @@
-# Copyright (c) 2008-2009 by David Golden. All rights reserved.
-# Licensed under Apache License, Version 2.0 (the "License").
-# You may not use this file except in compliance with the License.
-# A copy of the License was distributed with this file or you may obtain a 
-# copy of the License from http://www.apache.org/licenses/LICENSE-2.0
-
-package App::CPAN::Mini::Visit;
 use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.007';
-$VERSION = eval $VERSION; ## no critic
+package App::CPAN::Mini::Visit;
+# ABSTRACT: explore each distribution in a minicpan repository
+# VERSION
 
-use CPAN::Mini ();
-use Exception::Class::TryCatch qw/ try catch /;
+use CPAN::Mini 0.572 ();
+use Exception::Class::TryCatch 1.12 qw/ try catch /;
 use File::Basename qw/ basename /;
 use File::Find qw/ find /;
 use File::pushd qw/ tempd /;
 use Path::Class qw/ dir file /;
-use Getopt::Lucid qw/ :all /;
-use Pod::Usage qw/ pod2usage /;
+use Getopt::Lucid 0.16 qw/ :all /;
+use Pod::Usage 1.35 qw/ pod2usage /;
 
-use Archive::Extract ();
+use Archive::Extract 0.28 ();
 
 my @option_spec = (
   Switch("help|h"),
@@ -237,73 +231,29 @@ sub _visit {
 
 __END__
 
-=begin wikidoc
-
-= NAME
-
-App::CPAN::Mini::Visit - explore each distribution in a minicpan repository
-
-= VERSION
-
-This documentation describes %%VERSION%%.
-
-= SYNOPSIS
+=head1 SYNOPSIS
 
     #!/usr/bin/perl
     use App::CPAN::Mini::Visit;
     exit App::CPAN::Mini::Visit->run;
 
-= DESCRIPTION
+=head1 DESCRIPTION
 
-This module contains the guts of the [visitcpan] program.  See documentation of
+This module contains the guts of the L<visitcpan> program.  See documentation of
 that program for details on features and command line options.
 
-= USAGE
+=head1 USAGE
 
-== {run()}
+=head2 C<run>
 
     exit App::CPAN::Mini::Visit->run();
 
 Executes the program, processing command line arguments and traversing
 a minicpan repository.  Returns an exit code.
 
-= BUGS
+=head1 SEE ALSO
 
-Please report any bugs or feature using the CPAN Request Tracker.  
-Bugs can be submitted through the web interface at 
-[http://rt.cpan.org/Dist/Display.html?Queue=App-CPAN-Mini-Visit]
-
-When submitting a bug or request, please include a test-file or a patch to an
-existing test-file that illustrates the bug or desired feature.
-
-= SEE ALSO
-
-* [CPAN::Mini]
-
-= AUTHOR
-
-David A. Golden (DAGOLDEN)
-
-= COPYRIGHT AND LICENSE
-
-Copyright (c) 2008-2009 by David A. Golden. All rights reserved.
-
-Licensed under Apache License, Version 2.0 (the "License").
-You may not use this file except in compliance with the License.
-A copy of the License was distributed with this file or you may obtain a 
-copy of the License from http://www.apache.org/licenses/LICENSE-2.0
-
-Files produced as output though the use of this software, shall not be
-considered Derivative Works, but shall be considered the original work of the
-Licensor.
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-=end wikidoc
+=for :list
+* L<CPAN::Mini>
 
 =cut
-

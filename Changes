@@ -2,6 +2,10 @@ Revision history for App-CPAN-Mini-Visit
 
 {{$NEXT}}
 
+    [CHANGED]
+
+    - Actually fix the repo URL this time
+
 0.007     2014-02-27 11:31:54-05:00 America/New_York
 
     [CHANGED]
